@@ -1,0 +1,366 @@
+index.html<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiLaSiKa.AAEmon - Personal Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #121212;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* 1. Intro Preloader Animation */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #0b0c10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #d4af37;
+            display: inline-block;
+            animation: pulseFloat 2s infinite ease-in-out;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        @keyframes pulseFloat {
+            0% { transform: translateY(0px) scale(0.98); opacity: 0.7; }
+            50% { transform: translateY(-8px) scale(1.05); opacity: 1; text-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+            100% { transform: translateY(0px) scale(0.98); opacity: 0.7; }
+        }
+
+        /* 2. Main Layout & Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .admin-trigger {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .admin-trigger:hover {
+            background: #d4af37;
+            color: #000;
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 12, 9, 0.55), rgba(15, 12, 9, 0.75)), 
+                        url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 120px 8% 60px 8%;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .sub-title {
+            color: #d4af37;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .main-title em {
+            color: #d4af37;
+            font-style: italic;
+        }
+
+        .description {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 35px;
+        }
+
+        .btn-primary {
+            background: #f7f3ec;
+            color: #121212;
+            padding: 14px 28px;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #d4af37;
+        }
+
+        /* 3. Content Area */
+        .content-section {
+            background: #181614;
+            padding: 60px 8%;
+            min-height: 50vh;
+        }
+
+        #admin-panel {
+            display: none;
+            background: #221f1c;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        #admin-panel input, #admin-panel textarea, #admin-panel select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #121212;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .save-btn {
+            background: #d4af37;
+            color: #000;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .manuscript-card {
+            background: #221f1c;
+            border-left: 3px solid #d4af37;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .hidden-card {
+            border-left: 3px solid #e74c3c;
+            background: #2b1b1b;
+        }
+
+        .manuscript-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .hidden-card h3 {
+            color: #ff6b6b;
+        }
+
+        .badge {
+            background: #e74c3c;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.8rem; }
+            header { padding: 15px 20px; }
+            .hero { padding-left: 5%; padding-right: 5%; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-text">KiLaSiKa</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">📖</div>
+            <span>KiLaSiKa.AAEmon</span>
+        </div>
+        <button class="admin-trigger" onclick="toggleAdmin()">অ্যাডমিন প্যানেল</button>
+    </header>
+
+    <!-- Main Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="sub-title">A Personal Literary Archive</span>
+            <h1 class="main-title">Words kept <br><em>alive.</em></h1>
+            <p class="description">A private home for published manuscripts, essays, poems, and research writings.</p>
+            <div class="action-btns">
+                <a href="#archive" class="btn-primary">Browse the archive →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin & Manuscript Section -->
+    <section class="content-section" id="archive">
+        <div id="admin-panel">
+            <h3 style="color:#d4af37;">অ্যাডমিন প্রবেশাধিকার</h3>
+            <div id="login-box">
+                <input type="password" id="admin-pass" placeholder="পাসওয়ার্ড প্রবেশ করুন">
+                <button class="save-btn" onclick="authenticate()" style="margin-bottom: 15px;">লগইন করুন</button>
+            </div>
+            
+            <div id="editor-area" style="display:none;">
+                <input type="text" id="title" placeholder="পান্ডুলিপির শিরোনাম">
+                <textarea id="content" rows="6" placeholder="এখানে মূল পান্ডুলিপি লিখুন..."></textarea>
+                
+                <label style="color:#aaa; font-size:0.9rem;">পান্ডুলিপির ধরন নির্বাচন করুন:</label>
+                <select id="manuscript-type">
+                    <option value="public">পাবলিক (সবাই দেখতে পাবে)</option>
+                    <option value="hidden">গোপন/Hidden (শুধু আপনি দেখতে পাবেন)</option>
+                </select>
+
+                <button class="save-btn" onclick="saveManuscript()">পান্ডুলিপি প্রকাশ করুন</button>
+            </div>
+        </div>
+
+        <!-- সাধারণ পান্ডুলিপি তালিকা -->
+        <h2 style="font-family:'Playfair Display', serif; margin-bottom: 20px;">সংরক্ষিত পান্ডুলিপিসমূহ</h2>
+        <div id="manuscript-list"></div>
+
+        <!-- গোপন পান্ডুলিপি সেকশন (শুধু লগইন করলে দেখাবে) -->
+        <div id="hidden-section" style="display:none; margin-top: 50px;">
+            <h2 style="font-family:'Playfair Display', serif; margin-bottom: 20px; color: #ff6b6b;">🔒 গোপন পান্ডুলিপিসমূহ (Private Archives)</h2>
+            <div id="hidden-manuscript-list"></div>
+        </div>
+    </section>
+
+    <script>
+        // Preloader hide
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('preloader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 1200);
+        });
+
+        const ADMIN_PASSWORD = "12345";
+        let isLoggedIn = false;
+
+        function toggleAdmin() {
+            const panel = document.getElementById("admin-panel");
+            panel.style.display = panel.style.display === "block" ? "none" : "block";
+        }
+
+        function authenticate() {
+            const pass = document.getElementById("admin-pass").value;
+            if(pass === ADMIN_PASSWORD) {
+                isLoggedIn = true;
+                document.getElementById("login-box").style.display = "none";
+                document.getElementById("editor-area").style.display = "block";
+                document.getElementById("hidden-section").style.display = "block";
+                alert("অ্যাডমিন লগইন সফল হয়েছে! এখন গোপন ফাইল দেখতে ও লিখতে পারবেন।");
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
+        }
+
+        function saveManuscript() {
+            const title = document.getElementById("title").value;
+            const content = document.getElementById("content").value;
+            const type = document.getElementById("manuscript-type").value;
+
+            if(!title || !content) return alert("শিরোনাম ও লেখা দুটোই দিন!");
+
+            if(type === "public") {
+                const list = document.getElementById("manuscript-list");
+                const card = document.createElement("div");
+                card.className = "manuscript-card";
+                card.innerHTML = `<h3>${title}</h3><p style="white-space: pre-line; line-height: 1.6;">${content}</p>`;
+                list.prepend(card);
+            } else {
+                const hiddenList = document.getElementById("hidden-manuscript-list");
+                const card = document.createElement("div");
+                card.className = "manuscript-card hidden-card";
+                card.innerHTML = `<h3>${title} <span class="badge">গোপন</span></h3><p style="white-space: pre-line; line-height: 1.6;">${content}</p>`;
+                hiddenList.prepend(card);
+            }
+
+            document.getElementById("title").value = "";
+            document.getElementById("content").value = "";
+            alert(type === "public" ? "সাধারণ পান্ডুলিপি প্রকাশিত হয়েছে!" : "গোপন পান্ডুলিপি নিরাপদে সংরক্ষিত হয়েছে!");
+        }
+    </script>
+</body>
+</html>
